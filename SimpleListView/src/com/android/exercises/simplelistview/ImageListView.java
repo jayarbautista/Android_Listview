@@ -15,13 +15,10 @@ public class ImageListView extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		setListAdapter(new ImageArrayAdapter(this, LOGOS));
-
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		// get selected items
 		String selectedValue = (String) getListAdapter().getItem(position);
 		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
 
