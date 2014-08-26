@@ -1,6 +1,5 @@
 package com.android.exercises.simplelistview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,31 +17,42 @@ public class ImageArrayAdapter extends ArrayAdapter<String> {
 		this.context = context;
 		this.values = values;
 	}
- 
-	@SuppressLint("ViewHolder")
+	
+	static class ViewHolder {
+		TextView imageText;
+		ImageView image;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
- 
-		View rowView = inflater.inflate(R.layout.image_listview, parent, false);
-		TextView imageText = (TextView) rowView.findViewById(R.id.label);
-		ImageView image = (ImageView) rowView.findViewById(R.id.logo);
-		imageText.setText(values[position]);
- 
-		// Change icon based on name
-		String s = values[position];
- 
-		System.out.println(s);
- 
-		if (s.equals("Github")) {
-			image.setImageResource(R.drawable.git);
-		} else if (s.equals("Java")) {
-			image.setImageResource(R.drawable.java);
-		} else if (s.equals("PHP")) {
-			image.setImageResource(R.drawable.php);
+		ViewHolder holder;
+		
+		if(convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	 
+			convertView = inflater.inflate(R.layout.image_listview, parent, false);
+			
+			holder = new ViewHolder();
+			holder.imageText = (TextView) convertView.findViewById(R.id.label);
+			holder.image = (ImageView) convertView.findViewById(R.id.logo);
+			holder.imageText.setText(values[position]);
+			convertView.setTag(holder);
+	 
+			// Change icon based on name
+			String s = values[position];
+	 
+			if (s.equals("Github")) {
+				holder.image.setImageResource(R.drawable.git);
+			} else if (s.equals("Java")) {
+				holder.image.setImageResource(R.drawable.java);
+			} else if (s.equals("PHP")) {
+				holder.image.setImageResource(R.drawable.php);
+			}
+		} else {
+			holder = (ViewHolder)convertView.getTag();
 		}
  
-		return rowView;
+		return convertView;
 	}
 }
